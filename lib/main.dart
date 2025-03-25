@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:heart_prediction/views/welcome_screen.dart';
-
+import 'package:heart_prediction/views/splash_screen.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
      debugShowCheckedModeBanner: false,
-      home: WelcomeScreen(),
+      home: SplashScreen(),
     );
   }
 }
