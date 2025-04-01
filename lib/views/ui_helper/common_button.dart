@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'color.dart';
 
 class CommonButton extends StatelessWidget {
@@ -10,21 +9,23 @@ class CommonButton extends StatelessWidget {
   final double buttonHeight;
   final double buttonWidth;
   final VoidCallback onTap;
+
   const CommonButton({
     super.key,
     required this.buttonText,
     required this.buttonHeight,
     required this.buttonWidth,
     required this.onTap,
-    this.imagePath,
-    this.imageHeight,
-    this.imageWidth,
+    this.imagePath, // Optional
+    this.imageHeight, // Optional
+    this.imageWidth, // Optional
   });
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -44,13 +45,15 @@ class CommonButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              imagePath!,
-              height: screenHeight * imageHeight!, // Dynamic image size
-              width: screenWidth * imageWidth!,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(height: screenHeight * 0.01), // Dynamic spacing
+            // Show Image ONLY if imagePath is not null
+            if (imagePath != null)
+              Image.asset(
+                imagePath!,
+                height: (imageHeight != null) ? screenHeight * imageHeight! : screenHeight * 0.1, // Default height if null
+                width: (imageWidth != null) ? screenWidth * imageWidth! : screenWidth * 0.1, // Default width if null
+                fit: BoxFit.cover,
+              ),
+            if (imagePath != null) SizedBox(height: screenHeight * 0.01), // Add space only if an image exists
             Text(
               buttonText,
               style: TextStyle(
