@@ -75,7 +75,9 @@ class WelcomeScreen extends StatelessWidget {
                             imagePath: 'images/heart.png',
                             imageHeight: 0.07,
                             imageWidth: 0.15,
-                            pageName: FormScreen(), // Navigate to the  page
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>FormScreen()));
+                            }, // Navigate to the  page
                           ),
                           SizedBox(width: screenWidth * 0.10), // Dynamic spacing
 
@@ -87,7 +89,9 @@ class WelcomeScreen extends StatelessWidget {
                             imagePath: 'images/patient.png',
                             imageHeight: 0.07,
                             imageWidth: 0.15,
-                            pageName: PatientRecordsScreen(), // Navigate to the  page
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>PatientRecordsScreen()));
+                            }, // Navigate to the  page
                           ),
                         ],
                       ),

@@ -10,6 +10,7 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController patientName = TextEditingController();
   final TextEditingController patientAge = TextEditingController();
   final TextEditingController patientCard = TextEditingController();
@@ -83,6 +84,7 @@ class _FormScreenState extends State<FormScreen> {
                   SizedBox(height: screenHeight * 0.02),
                   //Form
                   Form(
+                    key: _formKey,
                     child: Column(
                       children: [
                         //Patient name
@@ -108,6 +110,14 @@ class _FormScreenState extends State<FormScreen> {
                           label: 'CNIC',
                           hint: 'Enter CNIC',
                           keyboard: TextInputType.number,
+                          validation: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'CNIC is required';
+                            } else if (!RegExp(r'^\d{5}-\d{7}-\d{1}$').hasMatch(value)) {
+                              return 'Enter CNIC in format: #####-#######-#';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: screenHeight * 0.02),
 
@@ -257,7 +267,7 @@ class _FormScreenState extends State<FormScreen> {
                           }).toList(),
                           onChanged: (String? newValue) {
                             setState(() {
-                              selectedChestPain = newValue;
+                              selectedEcgResults = newValue;
                             });
                           },
                         ),
