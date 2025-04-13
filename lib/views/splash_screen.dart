@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heart_prediction/views/prediction_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/welcome_screen.dart';
 class SplashScreen extends StatefulWidget {
@@ -17,7 +18,7 @@ void initState() {
     if (mounted) { // ✅ Check to avoid navigation if widget is disposed
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => WelcomeScreen()),
+        MaterialPageRoute(builder: (context) => PredictionScreen()),
       );
     }
   });

@@ -57,10 +57,11 @@ class _FormScreenState extends State<FormScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: screenHeight * 0.02),
                   //From Submission Container
                   Container(
                     height: screenHeight * 0.08,
-                    width: double.infinity,
+                    width: screenWidth*0.80,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: AppColors.lightGreen,
@@ -110,7 +111,7 @@ class _FormScreenState extends State<FormScreen> {
                         CommonTextFormField(
                           controller: patientCard,
                           label: 'CNIC',
-                          hint: 'Enter CNIC',
+                          hint: 'Enter CNIC in format: #####-#######-#',
                           keyboard: TextInputType.number,
                           validation: (value) {
                             if (value == null || value.isEmpty) {
@@ -159,54 +160,95 @@ class _FormScreenState extends State<FormScreen> {
                         ),
                         SizedBox(height: screenHeight * 0.02),
                         //chestPain dropdown menu
-                        DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            labelText: "Select Chest Pain",
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: "Select Chest Pain",
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.lightGreen,
+                            width: 2,
                           ),
-                          value: selectedChestPain,
-                          items: chestPain.map((String city) {
-                            return DropdownMenuItem<String>(
-                              value: city,
-                              child: Text(city),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedChestPain = newValue;
-                            });
-                          },
+                          borderRadius: BorderRadius.circular(20),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.lightGreen,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        errorBorder: OutlineInputBorder( // 🔴 Error border style
+                          borderSide: BorderSide(
+                            color: Colors.red,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      value: selectedChestPain,
+                      items: chestPain.map((String chestPainType) {
+                        return DropdownMenuItem<String>(
+                          value: chestPainType,
+                          child: Text(chestPainType),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedChestPain = newValue;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a Chest Pain type';
+                        }
+                        return null;
+                      },
+                    ),
                         SizedBox(height: screenHeight * 0.02),
                         //Patient Blood Pressure
-                        CommonTextFormField(
-                          controller: patientBloodPressure,
-                          label: 'Blood Pressure',
-                          hint: 'Enter BP (94 - 200 mmHg)',
-                          keyboard: TextInputType.number,
-                        ),
-                        SizedBox(height: screenHeight * 0.02),
+                      CommonTextFormField(
+                        controller: patientBloodPressure,
+                        label: 'Blood Pressure',
+                        hint: 'Enter BP (94 - 200 mmHg)',
+                        keyboard: TextInputType.number,
+                        validation: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Blood Pressure is required';
+                          }
+                          final num? bp = num.tryParse(value);
+                          if (bp == null) {
+                            return 'Enter a valid number';
+                          }
+                          if (bp < 94 || bp > 200) {
+                            return 'BP must be between 94 - 200 mmHg';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: screenHeight * 0.02),
                         // Patient Cholesterol
-                        CommonTextFormField(
-                          controller: patientCholesterol,
-                          label: 'Cholesterol',
-                          hint: 'Enter Cholesterol (126 - 564 mg/dl)',
-                          keyboard: TextInputType.number,
-                        ),
-                        SizedBox(height: screenHeight * 0.02),
+                      CommonTextFormField(
+                        controller: patientCholesterol,
+                        label: 'Cholesterol',
+                        hint: 'Enter Cholesterol (126 - 564 mg/dl)',
+                        keyboard: TextInputType.number,
+                        validation: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Cholesterol is required';
+                          }
+                          final num? cholesterol = num.tryParse(value);
+                          if (cholesterol == null) {
+                            return 'Enter a valid number';
+                          }
+                          if (cholesterol < 126 || cholesterol > 564) {
+                            return 'Cholesterol must be between 126 - 564 mg/dl';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: screenHeight * 0.02),
                         Column(
                           crossAxisAlignment:
                               CrossAxisAlignment
@@ -242,145 +284,214 @@ class _FormScreenState extends State<FormScreen> {
                           ],
                         ),
                         //ECG Results
-                        DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            labelText: "Select ECG Result",
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                    DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: "Select ECG Result",
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.lightGreen,
+                            width: 2,
                           ),
-                          value: selectedEcgResults,
-                          items: ecgResults.map((String ecgResults) {
-                            return DropdownMenuItem<String>(
-                              value: ecgResults,
-                              child: Text(ecgResults),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedEcgResults = newValue;
-                            });
-                          },
+                          borderRadius: BorderRadius.circular(20),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.lightGreen,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        errorBorder: OutlineInputBorder( // 🔴 Error border when validation fails
+                          borderSide: BorderSide(
+                            color: Colors.red,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      value: selectedEcgResults,
+                      items: ecgResults.map((String ecgResult) {
+                        return DropdownMenuItem<String>(
+                          value: ecgResult,
+                          child: Text(ecgResult),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedEcgResults = newValue;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select an ECG Result';
+                        }
+                        return null;
+                      },
+                    ),
                         SizedBox(height: screenHeight * 0.02),
                         //Slope of Peak Exercise
-                        DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            labelText: "Select Slope of Peak Exercise",
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: "Select Slope of Peak Exercise",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.lightGreen,
+                              width: 2,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          value: selectedSlopOfPeakExercise,
-                          items: slopOfPeakExercise.map((String slopOfPeakExercise) {
-                            return DropdownMenuItem<String>(
-                              value: slopOfPeakExercise,
-                              child: Text(slopOfPeakExercise),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedSlopOfPeakExercise = newValue;
-                            });
-                          },
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.lightGreen,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          errorBorder: OutlineInputBorder( // 🔴 Error border when validation fails
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                        SizedBox(height: screenHeight * 0.02),
+                        value: selectedSlopOfPeakExercise,
+                        items: slopOfPeakExercise.map((String slope) {
+                          return DropdownMenuItem<String>(
+                            value: slope,
+                            child: Text(slope),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedSlopOfPeakExercise = newValue;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a Slope of Peak Exercise';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: screenHeight * 0.02),
                         //Major Vessels
-                        DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            labelText: "Select No. of Major Vessels(0-4)",
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: "Select No. of Major Vessels (0-4)",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.lightGreen,
+                              width: 2,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          value: selectedMajorLargeVessels,
-                          items: majorLargeVessels.map((String selectedMajorLargeVessels) {
-                            return DropdownMenuItem<String>(
-                              value: selectedMajorLargeVessels,
-                              child: Text(selectedMajorLargeVessels),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedMajorLargeVessels = newValue;
-                            });
-                          },
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.lightGreen,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          errorBorder: OutlineInputBorder( // 🔴 Border turns red if validation fails
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                        SizedBox(height: screenHeight * 0.02),
+                        value: selectedMajorLargeVessels,
+                        items: majorLargeVessels.map((String vessel) {
+                          return DropdownMenuItem<String>(
+                            value: vessel,
+                            child: Text(vessel),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedMajorLargeVessels = newValue;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select the number of major vessels';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: screenHeight * 0.02),
                         //Thalassemia Type
-                        DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            labelText: "Select Thalassemia Type",
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: "Select Thalassemia Type",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.lightGreen,
+                              width: 2,
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.lightGreen,
-                                width: 2,
-                              ), // Default border color,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          value: selectedThalassemiaType,
-                          items: thalassemiaType.map((String selectedThalassemiaType) {
-                            return DropdownMenuItem<String>(
-                              value: selectedThalassemiaType,
-                              child: Text(selectedThalassemiaType),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedThalassemiaType = newValue;
-                            });
-                          },
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: AppColors.lightGreen,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          errorBorder: OutlineInputBorder( // 🔴 Border turns red if validation fails
+                            borderSide: BorderSide(
+                              color: Colors.red,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                        SizedBox(height: screenHeight * 0.02),
+                        value: selectedThalassemiaType,
+                        items: thalassemiaType.map((String type) {
+                          return DropdownMenuItem<String>(
+                            value: type,
+                            child: Text(type),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedThalassemiaType = newValue;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a Thalassemia type';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: screenHeight * 0.02),
                         //Patient Heart Rate
-                        CommonTextFormField(
-                          controller: patientHeartRate,
-                          label: 'Heart Rate',
-                          hint: 'Enter Max HR (71 - 202 bpm)',
-                          keyboard: TextInputType.number,
-                        ),
-                        SizedBox(height: screenHeight * 0.02),
+                      CommonTextFormField(
+                        controller: patientHeartRate,
+                        label: 'Heart Rate',
+                        hint: 'Enter Max HR (71 - 202 bpm)',
+                        keyboard: TextInputType.number,
+                        validation: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Heart Rate is required';
+                          }
+                          final num? heartRate = num.tryParse(value);
+                          if (heartRate == null) {
+                            return 'Enter a valid number';
+                          }
+                          if (heartRate < 71 || heartRate > 202) {
+                            return 'Heart Rate must be between 71 - 202 bpm';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: screenHeight * 0.02),
                         Column(
                           crossAxisAlignment:
                               CrossAxisAlignment
@@ -417,13 +528,45 @@ class _FormScreenState extends State<FormScreen> {
                         ),
                         SizedBox(height: screenHeight * 0.02),
                         //Patient Depression Exercise
-                        CommonTextFormField(
-                          controller: patientDepression,
-                          label: 'ST Depression Induced by Exercise',
-                          hint: 'Enter Old-peak (0.0 - 6.2)',
-                          keyboard: TextInputType.number,
-                        ),
-                       ],
+                      CommonTextFormField(
+                        controller: patientDepression,
+                        label: 'ST Depression Induced by Exercise',
+                        hint: 'Enter Old-peak (0.0 - 6.2)',
+                        keyboard: TextInputType.number,
+                        validation: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'ST Depression is required';
+                          }
+                          final double? depression = double.tryParse(value);
+                          if (depression == null) {
+                            return 'Enter a valid number';
+                          }
+                          if (depression < 0.0 || depression > 6.2) {
+                            return 'Old-peak must be between 0.0 - 6.2';
+                          }
+                          return null;
+                        },
+                      ),
+
+                      SizedBox(height: screenHeight * 0.02),
+                    //Predict Button
+                    CommonButton(
+                      buttonText: 'Predict',
+                      buttonHeight: 0.08,
+                      buttonWidth: 0.80,
+                      onTap: () {
+                        if(_formKey.currentState!.validate()){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => PatientRecordsScreen()), // ✅ Fixed
+                          );
+                        }
+
+                      },
+                    ),
+                        SizedBox(height: screenHeight * 0.02),
+
+                    ],
                     ),
                   ),
                 ],

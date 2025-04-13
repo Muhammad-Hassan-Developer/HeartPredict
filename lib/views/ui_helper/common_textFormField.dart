@@ -31,6 +31,15 @@ class CommonTextFormField extends StatelessWidget {
             20,
           ), // Keep rounded corners when focused
         ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.blue,
+            width: 2,
+          ), // Change color when focused
+          borderRadius: BorderRadius.circular(
+            20,
+          ), // Keep rounded corners when focused
+        ),
       ),
       keyboardType: keyboard,
       validator: validation,
