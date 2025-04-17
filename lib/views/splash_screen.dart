@@ -18,7 +18,7 @@ void initState() {
     if (mounted) { // ✅ Check to avoid navigation if widget is disposed
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => PredictionScreen()),
+        MaterialPageRoute(builder: (context) => WelcomeScreen()),
       );
     }
   });

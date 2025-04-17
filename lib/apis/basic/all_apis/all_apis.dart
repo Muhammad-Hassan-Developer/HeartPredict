@@ -6,7 +6,7 @@ class AllApis{
  static  Future<String> predictHeartDiseaseApi() async {
     final prediction = Uri.parse('https://prediction-d7d561d9ab6c.herokuapp.com/predict');
 
-    final data = {
+    final Map<String,double> data = {
       "age": 63,
       "sex": 1,
       "cp": 3,
@@ -20,8 +20,7 @@ class AllApis{
       "slope": 0,
       "ca": 0,
       "thal": 1
-    }
-    ;
+    };
 
     try {
       final response = await http.post(

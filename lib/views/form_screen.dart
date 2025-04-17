@@ -13,6 +13,7 @@ class FormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<FormScreen> {
   final _formKey = GlobalKey<FormState>();
+  // Text Editing Controllers
   final TextEditingController patientName = TextEditingController();
   final TextEditingController patientAge = TextEditingController();
   final TextEditingController patientCard = TextEditingController();
@@ -20,24 +21,80 @@ class _FormScreenState extends State<FormScreen> {
   final TextEditingController patientCholesterol = TextEditingController();
   final TextEditingController patientDepression = TextEditingController();
   final TextEditingController patientHeartRate = TextEditingController();
+  //radio button lists
+  // gender
   List<String> gendersList = ['Male', 'Female'];
-  String? selectedGender = 'Male';
+  String? selectedGender; // No default selected
+  int? selectedGenderValue; // to store mapped value (1 or 0)
+// map for gender
+  Map<String, int> genderMap = {
+    'Male': 1,
+    'Female': 0,
+  };
+  // fasting sugar
   List<String> fastingSugarList = ['normal', 'high'];
-  String? selectedFastingSugar = 'normal';
+  String? selectedFastingSugar ;
+  int? selectedFastingSugarValue;
+  Map<String, int> fastingSugarMap = {
+    'normal': 0,
+    'high': 1,
+  };
+  // exercise-induced angina
   List<String> anginaList = ['no', 'yes'];
-  String? selectedAngina = 'no';
+  String? selectedAngina ;
+  int? selectedAnginaValue ;
+  Map<String, int> anginaMap = {
+    'No': 0,
+    'Yes':1,
+  };
+
   // lists for the dropdown menu
   // chest pain
-  List<String>chestPain = ['typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'];
-  String? selectedChestPain;
-  List<String>ecgResults = ['Normal', 'ST-wave abnormality', 'Left ventricular hypertrophy'];
-  String? selectedEcgResults;
-  List<String>slopOfPeakExercise = ['Up-sloping', 'flat', 'Down-sloping'];
+  String? selectedChestPain;         // For storing dropdown label
+  int? selectedChestPainValue;       // For storing mapped int value
+// map for chest pain
+  Map<String, int> chestPainMap = {
+    "Typical Angina": 0,
+    "Atypical Angina": 1,
+    "Non-anginal Pain": 2,
+    "Asymptomatic": 3,
+  };
+// Ecg Results
+  String? selectedEcgResults ;
+  int? selectedEcgResultValue;
+  Map<String, int> ecgResultsMap = {
+    'Normal': 0,
+    'ST-wave abnormality': 1,
+    'Left ventricular hypertrophy': 2,
+  };
+// slop of peak exercise
   String? selectedSlopOfPeakExercise;
-  List<String>majorLargeVessels = ['0', '1', '2', '3', '4'];
+  int? selectedSlopOfPeakExerciseValue;
+  Map<String, int> slopOfPeakExerciseMap = {
+    'Up-sloping': 0,
+    'flat': 1,
+    'Down-sloping': 2,
+  };
+  // major vessels
   String? selectedMajorLargeVessels;
-  List<String>thalassemiaType=['Normal', 'Fixed defect', 'Reversible defect'];
+  int? selectedMajorLargeVesselsValue;
+  Map<String, int> majorLargeVesselsMap = {
+    '0': 0,
+    '1': 1,
+    '2': 2,
+    '3': 3,
+    '4': 4,
+  };
+  // thalassemia
   String? selectedThalassemiaType;
+  int? selectedThalassemiaTypeValue;
+  Map<String, int> thalassemiaTypeMap = {
+    'Normal': 1,
+    'Fixed defect': 2,
+    'Reversible defect': 3,
+  };
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -123,87 +180,72 @@ class _FormScreenState extends State<FormScreen> {
                           },
                         ),
                         SizedBox(height: screenHeight * 0.02),
+                        //gender radio button
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Gender',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ...gendersList.map((gender) {
+                            return RadioListTile<String>(
+                              title: Text(gender),
+                              value: gender,
+                              groupValue: selectedGender,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedGender = value;
+                                  selectedGenderValue = genderMap[value!]; // 🎯 mapped int value
+                                });
+                              },
+                            );
+                          }).toList(),
+                        ],
+                      ),
 
-                        Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start, // Align text and radio buttons to start
-                          children: [
-                            Text(
-                              'Gender',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            RadioListTile<String>(
-                              title: Text('Male'),
-                              value: gendersList[0],
-                              groupValue: selectedGender,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<String>(
-                              title: Text('Female'),
-                              value: gendersList[1],
-                              groupValue: selectedGender,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
                         SizedBox(height: screenHeight * 0.02),
                         //chestPain dropdown menu
-                    DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        labelText: "Select Chest Pain",
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.lightGreen,
-                            width: 2,
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: "Select Chest Pain",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.lightGreen,
-                            width: 2,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        errorBorder: OutlineInputBorder( // 🔴 Error border style
-                          borderSide: BorderSide(
-                            color: Colors.red,
-                            width: 2,
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red, width: 2),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          borderRadius: BorderRadius.circular(20),
                         ),
+                        value: selectedChestPain,
+                        items: chestPainMap.keys.map((String chestPainType) {
+                          return DropdownMenuItem<String>(
+                            value: chestPainType,
+                            child: Text(chestPainType),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedChestPain = newValue; // 💾 Save label
+                            selectedChestPainValue = chestPainMap[newValue]; // 💾 Save mapped value
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a Chest Pain type';
+                          }
+                          return null;
+                        },
                       ),
-                      value: selectedChestPain,
-                      items: chestPain.map((String chestPainType) {
-                        return DropdownMenuItem<String>(
-                          value: chestPainType,
-                          child: Text(chestPainType),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedChestPain = newValue;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a Chest Pain type';
-                        }
-                        return null;
-                      },
-                    ),
+
                         SizedBox(height: screenHeight * 0.02),
                         //Patient Blood Pressure
                       CommonTextFormField(
@@ -249,10 +291,9 @@ class _FormScreenState extends State<FormScreen> {
                       ),
 
                       SizedBox(height: screenHeight * 0.02),
+                        //Fasting Blood Sugar
                         Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start, // Align text and radio buttons to start
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Fasting Blood Sugar',
@@ -261,213 +302,174 @@ class _FormScreenState extends State<FormScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            RadioListTile<String>(
-                              title: Text('Normal'),
-                              value: fastingSugarList[0],
-                              groupValue: selectedFastingSugar,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<String>(
-                              title: Text('High'),
-                              value: fastingSugarList[1],
-                              groupValue: selectedFastingSugar,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
+                            ...gendersList.map((fastingSugarList) {
+                              return RadioListTile<String>(
+                                title: Text(fastingSugarList),
+                                value: fastingSugarList,
+                                groupValue: selectedFastingSugar,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedFastingSugar = value;
+                                    selectedFastingSugarValue = fastingSugarMap[value!]; // 🎯 mapped int value
+                                  });
+                                },
+                              );
+                            }).toList(),
                           ],
                         ),
                         //ECG Results
-                    DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        labelText: "Select ECG Result",
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.lightGreen,
-                            width: 2,
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: "Select ECG Results",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red, width: 2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                           ),
-                          borderRadius: BorderRadius.circular(20),
+                          value: selectedEcgResults,
+                          items: ecgResultsMap.keys.map((String ecgResult) {
+                            return DropdownMenuItem<String>(
+                              value: ecgResult,
+                              child: Text(ecgResult),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedChestPain = newValue; // 💾 Save label
+                              selectedChestPainValue = ecgResultsMap[newValue]; // 💾 Save mapped value
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select a Ecg Result';
+                            }
+                            return null;
+                          },
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.lightGreen,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        errorBorder: OutlineInputBorder( // 🔴 Error border when validation fails
-                          borderSide: BorderSide(
-                            color: Colors.red,
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      value: selectedEcgResults,
-                      items: ecgResults.map((String ecgResult) {
-                        return DropdownMenuItem<String>(
-                          value: ecgResult,
-                          child: Text(ecgResult),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          selectedEcgResults = newValue;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select an ECG Result';
-                        }
-                        return null;
-                      },
-                    ),
                         SizedBox(height: screenHeight * 0.02),
                         //Slope of Peak Exercise
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: "Select Slope of Peak Exercise",
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.lightGreen,
-                              width: 2,
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: "Select Slope of Peak Exercise",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.lightGreen,
-                              width: 2,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          errorBorder: OutlineInputBorder( // 🔴 Error border when validation fails
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                              width: 2,
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
                           ),
+                          value: selectedSlopOfPeakExercise,
+                          items: slopOfPeakExerciseMap.keys.map((String slop) {
+                            return DropdownMenuItem<String>(
+                              value: slop,
+                              child: Text(slop),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedSlopOfPeakExercise = newValue; // 💾 Save label
+                              selectedSlopOfPeakExerciseValue = slopOfPeakExerciseMap[newValue]; // 💾 Save mapped value
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select slope type';
+                            }
+                            return null;
+                          },
                         ),
-                        value: selectedSlopOfPeakExercise,
-                        items: slopOfPeakExercise.map((String slope) {
-                          return DropdownMenuItem<String>(
-                            value: slope,
-                            child: Text(slope),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedSlopOfPeakExercise = newValue;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select a Slope of Peak Exercise';
-                          }
-                          return null;
-                        },
-                      ),
 
                       SizedBox(height: screenHeight * 0.02),
                         //Major Vessels
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: "Select No. of Major Vessels (0-4)",
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.lightGreen,
-                              width: 2,
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: "Select Major Vessels",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.lightGreen,
-                              width: 2,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          errorBorder: OutlineInputBorder( // 🔴 Border turns red if validation fails
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                              width: 2,
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
                           ),
+                          value: selectedMajorLargeVessels,
+                          items: majorLargeVesselsMap.keys.map((String majorVessels) {
+                            return DropdownMenuItem<String>(
+                              value: majorVessels,
+                              child: Text(majorVessels),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedMajorLargeVessels = newValue; // 💾 Save label
+                              selectedMajorLargeVesselsValue = majorLargeVesselsMap[newValue]; // 💾 Save mapped value
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select Major Vessels';
+                            }
+                            return null;
+                          },
                         ),
-                        value: selectedMajorLargeVessels,
-                        items: majorLargeVessels.map((String vessel) {
-                          return DropdownMenuItem<String>(
-                            value: vessel,
-                            child: Text(vessel),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedMajorLargeVessels = newValue;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select the number of major vessels';
-                          }
-                          return null;
-                        },
-                      ),
 
                       SizedBox(height: screenHeight * 0.02),
                         //Thalassemia Type
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: "Select Thalassemia Type",
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.lightGreen,
-                              width: 2,
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: "Select Thalassemia Type",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.lightGreen,
-                              width: 2,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.lightGreen, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          errorBorder: OutlineInputBorder( // 🔴 Border turns red if validation fails
-                            borderSide: BorderSide(
-                              color: Colors.red,
-                              width: 2,
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red, width: 2),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            borderRadius: BorderRadius.circular(20),
                           ),
+                          value: selectedThalassemiaType,
+                          items: thalassemiaTypeMap.keys.map((String thalassemia) {
+                            return DropdownMenuItem<String>(
+                              value: thalassemia,
+                              child: Text(thalassemia),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedThalassemiaType = newValue; // 💾 Save label
+                              selectedThalassemiaTypeValue = thalassemiaTypeMap[newValue]; // 💾 Save mapped value
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please select Thalassemia Type';
+                            }
+                            return null;
+                          },
                         ),
-                        value: selectedThalassemiaType,
-                        items: thalassemiaType.map((String type) {
-                          return DropdownMenuItem<String>(
-                            value: type,
-                            child: Text(type),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedThalassemiaType = newValue;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select a Thalassemia type';
-                          }
-                          return null;
-                        },
-                      ),
 
                       SizedBox(height: screenHeight * 0.02),
                         //Patient Heart Rate
@@ -492,10 +494,9 @@ class _FormScreenState extends State<FormScreen> {
                       ),
 
                       SizedBox(height: screenHeight * 0.02),
+                        //Exercise-Induced angina
                         Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start, // Align text and radio buttons to start
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Exercise-Induced Angina',
@@ -504,26 +505,19 @@ class _FormScreenState extends State<FormScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            RadioListTile<String>(
-                              title: Text('No'),
-                              value: anginaList[0],
-                              groupValue: selectedAngina,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
-                            RadioListTile<String>(
-                              title: Text('Yes'),
-                              value: anginaList[1],
-                              groupValue: selectedAngina,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedGender = value;
-                                });
-                              },
-                            ),
+                            ...gendersList.map((angina) {
+                              return RadioListTile<String>(
+                                title: Text(angina),
+                                value: angina,
+                                groupValue: selectedAngina,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedAngina = value;
+                                    selectedAnginaValue = anginaMap[value!]; // 🎯 mapped int value
+                                  });
+                                },
+                              );
+                            }).toList(),
                           ],
                         ),
                         SizedBox(height: screenHeight * 0.02),
@@ -560,6 +554,22 @@ class _FormScreenState extends State<FormScreen> {
                             context,
                             MaterialPageRoute(builder: (context) => PatientRecordsScreen()), // ✅ Fixed
                           );
+                          final Map<String, double> data = {
+                            "age": double.tryParse(patientAge.text) ?? 0.0,
+
+                            "sex": selectedGenderValue?.toDouble() ?? 0.0,
+                            "cp": selectedChestPainValue?.toDouble() ?? 0.0,
+                            "trestbps": double.tryParse(patientBloodPressure.text) ?? 0.0,
+                            "chol": double.tryParse(patientCholesterol.text) ?? 0.0,
+                            "fbs": selectedFastingSugarValue?.toDouble() ?? 0.0,
+                            "restecg": selectedEcgResultValue?.toDouble() ?? 0.0,
+                            "thalach": double.tryParse(patientHeartRate.text) ?? 0.0,
+                            "exang": selectedAnginaValue?.toDouble()??0.0,
+                            "oldpeak": double.tryParse(patientDepression.text) ?? 0.0,
+                            "slope": selectedSlopOfPeakExerciseValue?.toDouble()??0.0,
+                            "ca": selectedMajorLargeVesselsValue?.toDouble()??0.0,
+                            "thal": selectedThalassemiaTypeValue?.toDouble()?? 0.0
+                          };
                         }
 
                       },
