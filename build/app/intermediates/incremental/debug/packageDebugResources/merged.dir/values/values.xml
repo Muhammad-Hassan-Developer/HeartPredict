@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="gcm_defaultSenderId" translatable="false">635272758836</string>
+    <string name="google_api_key" translatable="false">AIzaSyCSgpn46_gaDJ7dInvoekioMAQrwJVswgQ</string>
+    <string name="google_app_id" translatable="false">1:635272758836:android:b22dd56aec34b8ccf6ec61</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCSgpn46_gaDJ7dInvoekioMAQrwJVswgQ</string>
+    <string name="google_storage_bucket" translatable="false">heart-prediction-12fbf.firebasestorage.app</string>
+    <string name="project_id" translatable="false">heart-prediction-12fbf</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         
         <item name="android:windowBackground">@drawable/launch_background</item>

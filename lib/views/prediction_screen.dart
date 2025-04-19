@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class PredictionScreen extends StatefulWidget {
   final String predictionResult;
+
 
   const PredictionScreen({super.key, required this.predictionResult});
 
@@ -10,10 +13,12 @@ class PredictionScreen extends StatefulWidget {
 }
 
 class _PredictionScreenState extends State<PredictionScreen> {
+
   @override
   Widget build(BuildContext context) {
+    log('Prediction Result: ${widget.predictionResult}');
     return Scaffold(
-      appBar: AppBar(title: Text('Heart Disease Predictor')),
+      appBar: AppBar(title: Text('Heart Disease Prediction')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -21,14 +26,15 @@ class _PredictionScreenState extends State<PredictionScreen> {
           children: [
             SizedBox(height: 40),
             Text(
-              'Prediction Result:',
+              'Result:',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 15),
             Text(
               widget.predictionResult,
-              style: TextStyle(fontSize: 20, color: Colors.blueGrey),
+              style: TextStyle(fontSize: 18, color: Colors.blueGrey),
             ),
+
           ],
         ),
       ),

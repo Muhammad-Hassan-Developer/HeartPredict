@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:heart_prediction/views/prediction_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
@@ -14,7 +17,39 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
+  Future <void> resultPrediction(dataForPrediction) async {
+    try {
+      // Call prediction API
+
+      String predictionResult = await AllApis
+          .predictHeartDiseaseApi(dataForPrediction);
+
+      final String finalResult = predictionResult ==
+          '1'
+          ? 'Yes, the patient has heart disease.'
+          : 'No, the patient does not have heart disease.';
+
+      Navigator.pop(context); // Remove loading indicator
+
+      // Go to result screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PredictionScreen(
+            predictionResult: finalResult,
+          ),
+        ),
+      );
+    } catch (e) {
+      Navigator.pop(context); // Remove loading if error
+      log("❌ Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error occurred while predicting.")),
+      );
+    }
+  }
   final _formKey = GlobalKey<FormState>();
+  final dbRef = FirebaseDatabase.instance.ref('user-data');
   // Text Editing Controllers
   final TextEditingController patientName = TextEditingController();
   final TextEditingController patientAge = TextEditingController();
@@ -620,63 +655,35 @@ class _FormScreenState extends State<FormScreen> {
                           buttonText: 'Predict',
                           buttonHeight: 0.08,
                           buttonWidth: 0.80,
-                          onTap: () async {
-                            if (_formKey.currentState!.validate()) {
-                              final Map<String, double> data = {
-                                "age": double.tryParse(patientAge.text) ?? 0.0,
-                                "sex": selectedGenderValue?.toDouble() ?? 0.0,
-                                "cp": selectedChestPainValue?.toDouble() ?? 0.0,
-                                "trestbps":
-                                    double.tryParse(
-                                      patientBloodPressure.text,
-                                    ) ??
-                                    0.0,
-                                "chol":
-                                    double.tryParse(patientCholesterol.text) ??
-                                    0.0,
-                                "fbs":
-                                    selectedFastingSugarValue?.toDouble() ??
-                                    0.0,
-                                "restecg":
-                                    selectedEcgResultValue?.toDouble() ?? 0.0,
-                                "thalach":
-                                    double.tryParse(patientHeartRate.text) ??
-                                    0.0,
-                                "exang": selectedAnginaValue?.toDouble() ?? 0.0,
-                                "oldpeak":
-                                    double.tryParse(patientDepression.text) ??
-                                    0.0,
-                                "slope":
-                                    selectedSlopOfPeakExerciseValue
-                                        ?.toDouble() ??
-                                    0.0,
-                                "ca":
-                                    selectedMajorLargeVesselsValue
-                                        ?.toDouble() ??
-                                    0.0,
-                                "thal":
-                                    selectedThalassemiaTypeValue?.toDouble() ??
-                                    0.0,
-                              };
+                            onTap: () async {
+                              if (_formKey.currentState!.validate()) {
+                                // Show loading indicator
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => Center(child: CircularProgressIndicator()),
+                                );
 
-                              String predictionResult =
-                                  await AllApis.predictHeartDiseaseApi(data);
+                                final Map<String, double> dataForPrediction = {
+                                  "age": double.tryParse(patientAge.text) ?? 0.0,
+                                  "sex": selectedGenderValue?.toDouble() ?? 0.0,
+                                  "cp": selectedChestPainValue?.toDouble() ?? 0.0,
+                                  "trestbps": double.tryParse(patientBloodPressure.text) ?? 0.0,
+                                  "chol": double.tryParse(patientCholesterol.text) ?? 0.0,
+                                  "fbs": selectedFastingSugarValue?.toDouble() ?? 0.0,
+                                  "restecg": selectedEcgResultValue?.toDouble() ?? 0.0,
+                                  "thalach": double.tryParse(patientHeartRate.text) ?? 0.0,
+                                  "exang": selectedAnginaValue?.toDouble() ?? 0.0,
+                                  "oldpeak": double.tryParse(patientDepression.text) ?? 0.0,
+                                  "slope": selectedSlopOfPeakExerciseValue?.toDouble() ?? 0.0,
+                                  "ca": selectedMajorLargeVesselsValue?.toDouble() ?? 0.0,
+                                  "thal": selectedThalassemiaTypeValue?.toDouble() ?? 0.0,
+                                };
+                                resultPrediction(dataForPrediction);
+                               }
 
-                              final String finalResult =
-                                  predictionResult == '1'
-                                      ? 'Yes, the patient has heart disease.'
-                                      : 'No, the patient does not have heart disease.';
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => PredictionScreen(
-                                        predictionResult: finalResult,
-                                      ),
-                                ),
-                              );
                             }
-                          },
+
                         ),
                         SizedBox(height: screenHeight * 0.02),
                       ],
