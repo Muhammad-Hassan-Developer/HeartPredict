@@ -4,23 +4,7 @@ import 'package:http/http.dart' as http;
 
 class AllApis{
  static  Future<String> predictHeartDiseaseApi(final Map<String, double>data) async {
-    final prediction = Uri.parse('https://prediction-d7d561d9ab6c.herokuapp.com/predict');
-
-    // final Map<String,double> data = {
-    //   "age": 63,
-    //   "sex": 1,
-    //   "cp": 3,
-    //   "trestbps": 145,
-    //   "chol": 233,
-    //   "fbs": 1,
-    //   "restecg": 0,
-    //   "thalach": 150,
-    //   "exang": 0,
-    //   "oldpeak": 2.3,
-    //   "slope": 0,
-    //   "ca": 0,
-    //   "thal": 1
-    // };
+    final prediction = Uri.parse(BasicUrls.predictionUrl);
 
     try {
       final response = await http.post(

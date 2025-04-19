@@ -106,7 +106,7 @@ class _FormScreenState extends State<FormScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: screenHeight * 0.02),
-                  //From Submission Container
+                  //Form Submission Container
                   Container(
                     height: screenHeight * 0.08,
                     width: screenWidth * 0.80,
@@ -144,6 +144,12 @@ class _FormScreenState extends State<FormScreen> {
                           label: 'Patient Name',
                           hint: 'Enter Name',
                           keyboard: TextInputType.text,
+                          validation: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please enter patient name';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: screenHeight * 0.02),
                         //Patient age
@@ -152,6 +158,16 @@ class _FormScreenState extends State<FormScreen> {
                           label: 'Age',
                           hint: 'Enter Age',
                           keyboard: TextInputType.number,
+                          validation: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter age';
+                            }
+                            final age = int.tryParse(value);
+                            if (age == null || age <= 0) {
+                              return 'Enter a valid age';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: screenHeight * 0.02),
 
