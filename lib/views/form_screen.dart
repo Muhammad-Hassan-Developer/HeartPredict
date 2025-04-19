@@ -17,7 +17,7 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
-  Future <void> resultPrediction(dataForPrediction) async {
+  Future <void> resultPrediction(dataForPrediction,formData) async {
     try {
       // Call prediction API
 
@@ -36,7 +36,7 @@ class _FormScreenState extends State<FormScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => PredictionScreen(
-            predictionResult: finalResult,
+            predictionResult: finalResult,formData: formData,
           ),
         ),
       );
@@ -66,12 +66,12 @@ class _FormScreenState extends State<FormScreen> {
   // map for gender
   Map<String, int> genderMap = {'Male': 1, 'Female': 0};
   // fasting sugar
-  List<String> fastingSugarList = ['normal', 'high'];
+  List<String> fastingSugarList = ['Normal', 'High'];
   String? selectedFastingSugar;
   int? selectedFastingSugarValue;
-  Map<String, int> fastingSugarMap = {'normal': 0, 'high': 1};
+  Map<String, int> fastingSugarMap = {'Normal': 0, 'High': 1};
   // exercise-induced angina
-  List<String> anginaList = ['no', 'yes'];
+  List<String> anginaList = ['No', 'Yes'];
   String? selectedAngina;
   int? selectedAnginaValue;
   Map<String, int> anginaMap = {'No': 0, 'Yes': 1};
@@ -663,7 +663,23 @@ class _FormScreenState extends State<FormScreen> {
                                   barrierDismissible: false,
                                   builder: (_) => Center(child: CircularProgressIndicator()),
                                 );
-
+                                final Map<String, dynamic> formData = {
+                                  "Patient Name": patientName.text ,
+                                  "CNIC": patientCard.text ,
+                                  "Age": patientAge.text ,
+                                  "Sex": selectedGender,
+                                  "Chest Pain": selectedChestPain,
+                                  "Blood Pressure":patientBloodPressure.text,
+                                  "Cholesterol": patientCholesterol.text,
+                                  "Fasting Sugar": selectedFastingSugar,
+                                  "ECG": selectedEcgResults,
+                                  "Heart Rate": patientHeartRate.text,
+                                  "Angina": selectedAngina,
+                                  "patient Depression": patientDepression.text,
+                                  "Slop": selectedSlopOfPeakExercise,
+                                  "Major Large Vessels": selectedMajorLargeVessels,
+                                  "Thalassemia Type": selectedThalassemiaType,
+                                };
                                 final Map<String, double> dataForPrediction = {
                                   "age": double.tryParse(patientAge.text) ?? 0.0,
                                   "sex": selectedGenderValue?.toDouble() ?? 0.0,
@@ -679,7 +695,7 @@ class _FormScreenState extends State<FormScreen> {
                                   "ca": selectedMajorLargeVesselsValue?.toDouble() ?? 0.0,
                                   "thal": selectedThalassemiaTypeValue?.toDouble() ?? 0.0,
                                 };
-                                resultPrediction(dataForPrediction);
+                                resultPrediction(dataForPrediction,formData);
                                }
 
                             }
