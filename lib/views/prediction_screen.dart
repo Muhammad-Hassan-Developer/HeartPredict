@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:heart_prediction/apis/basic/services/firebase_services.dart';
 import 'package:heart_prediction/views/ui_helper/common_button.dart';
 
 class PredictionScreen extends StatefulWidget {
@@ -15,24 +16,7 @@ class PredictionScreen extends StatefulWidget {
 }
 
 class _PredictionScreenState extends State<PredictionScreen> {
-  Future<void> sendFormDataToFirebase(String predictionResult, Map<String, dynamic> formData) async {
-    final cnic = formData["CNIC"]; // Use the correct prefixed key
 
-    if (cnic == null || cnic.isEmpty) {
-      log("Error: CNIC is null or empty. Data not saved.");
-      return;
-    }
-
-    final Map<String, dynamic> dataForFirebaseDb = {
-      'formData': formData,
-      'predictionResult': predictionResult,
-    };
-
-    final dbRef = FirebaseDatabase.instance.ref('user-data/$cnic');
-    await dbRef.push().set(dataForFirebaseDb);
-
-    log("Data saved under CNIC: $cnic");
-  }
 
 
 
@@ -58,7 +42,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
             ),
             SizedBox(height: 40),
             CommonButton(buttonText: "Save", buttonHeight: 0.08, buttonWidth: 0.90, onTap: ()async{
-              await  sendFormDataToFirebase(widget.predictionResult,widget.formData);
+              await  FirebaseServices.sendFormDataToFirebase(widget.predictionResult,widget.formData);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Data saved successfully")),
                 );

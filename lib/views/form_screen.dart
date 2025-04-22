@@ -7,7 +7,7 @@ import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/ui_helper/common_button.dart';
 import 'package:heart_prediction/views/ui_helper/common_textFormField.dart';
 
-import '../apis/basic/all_apis/all_apis.dart';
+import '../apis/basic/services/model_services.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -21,7 +21,7 @@ class _FormScreenState extends State<FormScreen> {
     try {
       // Call prediction API
 
-      String predictionResult = await AllApis
+      String predictionResult = await ModelServices
           .predictHeartDiseaseApi(dataForPrediction);
 
       final String finalResult = predictionResult ==

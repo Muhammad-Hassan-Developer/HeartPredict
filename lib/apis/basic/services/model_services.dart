@@ -2,7 +2,7 @@ import 'package:heart_prediction/apis/basic/basic_urls.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class AllApis{
+class ModelServices{
  static  Future<String> predictHeartDiseaseApi(final Map<String, double>data) async {
     final prediction = Uri.parse(BasicUrls.predictionUrl);
 
