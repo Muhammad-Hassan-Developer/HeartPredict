@@ -3,6 +3,7 @@ import 'dart:developer' ;
 import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseServices{
+
   static Future<void> sendFormDataToFirebase(String predictionResult, Map<String, dynamic> formData) async {
     final cnic = formData["CNIC"]; // Use the correct prefixed key
 
@@ -22,25 +23,47 @@ class FirebaseServices{
     log("Data saved under CNIC: $cnic");
   }
 
-  static Future<List<Map<String, dynamic>>> getFormDataFromFirebase() async {
-    final dbRef = FirebaseDatabase.instance.ref('user-data');
-    final dataSnapshot = await dbRef.get();
+  static Future<List<Map<String, dynamic>>> getAllUserDataWithoutModel() async {
+    final dbRef = FirebaseDatabase.instance.ref().child('user-data');
+    List<Map<String, dynamic>> patientRecords = [];
 
-    if (dataSnapshot.exists) {
-      // Convert data into a list of maps
-      final List<Map<String, dynamic>> userData = [];
+    try {
+      final snapshot = await dbRef.get();
 
-      // Assuming data is a map where each user has an ID (key) and the data as a map
-      Map<dynamic, dynamic> data = dataSnapshot.value as Map<dynamic, dynamic>;
+      if (snapshot.exists) {
+        final Map<dynamic, dynamic> userData = snapshot.value as Map<dynamic, dynamic>;
 
-      data.forEach((key, value) {
-        userData.add(Map<String, dynamic>.from(value));
-      });
+        userData.forEach((cnic, entries) {
+          final Map<dynamic, dynamic> entriesMap = entries as Map<dynamic, dynamic>;
 
-      return userData;
-    } else {
-      return [];
+          entriesMap.forEach((entryKey, data) {
+            final Map<dynamic, dynamic> dataMap = data as Map<dynamic, dynamic>;
+            final formData = Map<String, dynamic>.from(dataMap['formData']);
+            final prediction = dataMap['predictionResult'];
+
+            patientRecords.add({
+              'CNIC': cnic,
+              'Patient Name': formData["Patient Name"],
+              'Prediction': prediction,
+              'Form Data': formData,
+            });
+          });
+        });
+      } else {
+        log('No data found in user-data.');
+      }
+    } catch (e) {
+      log('Error reading data: $e');
     }
+
+    return patientRecords;
   }
+
+
+
+// Define your Firebase reference
+
+
+
 
 }

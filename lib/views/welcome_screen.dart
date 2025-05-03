@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:heart_prediction/views/patient_records_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/ui_helper/common_button.dart';
 
+import '../apis/basic/services/firebase_services.dart';
 import 'form_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -89,9 +92,38 @@ class WelcomeScreen extends StatelessWidget {
                             imagePath: 'images/patient.png',
                             imageHeight: 0.07,
                             imageWidth: 0.15,
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>PatientRecordsScreen()));
-                            }, // Navigate to the  page
+                              onTap: () async {
+                                log('tapped');
+
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => const Center(child: CircularProgressIndicator()),
+                                );
+
+                                try {
+                                  final data = await FirebaseServices.getAllUserDataWithoutModel();
+                                  log("Data length: ${data.length}");
+
+                                  // Dismiss loading dialog
+                                  Navigator.pop(context);
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PatientRecordsScreen(),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  Navigator.pop(context); // remove loader if error
+                                  log('Error while fetching: $e');
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Error fetching data")),
+                                  );
+                                }
+                              }
+
+                            // Navigate to the  page
                           ),
                         ],
                       ),
