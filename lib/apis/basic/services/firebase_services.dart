@@ -1,9 +1,8 @@
 import 'dart:developer' ;
-
 import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseServices{
-
+  static final dbRef = FirebaseDatabase.instance.ref().child('user-data');
   static Future<void> sendFormDataToFirebase(String predictionResult, Map<String, dynamic> formData) async {
     final cnic = formData["CNIC"]; // Use the correct prefixed key
 
@@ -23,43 +22,42 @@ class FirebaseServices{
     log("Data saved under CNIC: $cnic");
   }
 
-  static Future<List<Map<String, dynamic>>> getAllUserDataWithoutModel() async {
-    final dbRef = FirebaseDatabase.instance.ref().child('user-data');
-    List<Map<String, dynamic>> patientRecords = [];
 
-    try {
-      final snapshot = await dbRef.get();
+    static Future<List<Map<String, dynamic>>> getAllUserDataWithoutModel() async {
+      try {
+        final snapshot = await dbRef.once();
 
-      if (snapshot.exists) {
-        final Map<dynamic, dynamic> userData = snapshot.value as Map<dynamic, dynamic>;
+        if (snapshot.snapshot.value == null) {
+          return [];
+        }
 
-        userData.forEach((cnic, entries) {
-          final Map<dynamic, dynamic> entriesMap = entries as Map<dynamic, dynamic>;
+        final Map<dynamic, dynamic> data =
+        snapshot.snapshot.value as Map<dynamic, dynamic>;
 
-          entriesMap.forEach((entryKey, data) {
-            final Map<dynamic, dynamic> dataMap = data as Map<dynamic, dynamic>;
-            final formData = Map<String, dynamic>.from(dataMap['formData']);
-            final prediction = dataMap['predictionResult'];
+        final List<Map<String, dynamic>> patientList = [];
 
-            patientRecords.add({
-              'CNIC': cnic,
-              'Patient Name': formData["Patient Name"],
-              'Prediction': prediction,
-              'Form Data': formData,
+        data.forEach((cnic, recordMap) {
+          if (recordMap is Map) {
+            recordMap.forEach((key, value) {
+              if (value is Map && value.containsKey('formData')) {
+                final formData = Map<String, dynamic>.from(value['formData']);
+                final prediction = value['predictionResult'] ?? 'No result';
+
+                patientList.add({
+                  'formData': formData,
+                  'predictionResult': prediction,
+                });
+              }
             });
-          });
+          }
         });
-      } else {
-        log('No data found in user-data.');
+
+        return patientList;
+      } catch (e) {
+        log('Error fetching user data: $e');
+        return [];
       }
-    } catch (e) {
-      log('Error reading data: $e');
     }
-
-    return patientRecords;
-  }
-
-
 
 // Define your Firebase reference
 
