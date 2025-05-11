@@ -15,16 +15,22 @@ class CommonTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
+        labelStyle: TextStyle(
+          color: AppColors.lightRed,
+        ),
+        hintStyle:TextStyle(
+          color: AppColors.lightRed,
+        ) ,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: AppColors.lightGreen,
+            color: AppColors.lightRed,
             width: 2,
           ), // Default border color,
           borderRadius: BorderRadius.circular(20),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.blue,
+            color: AppColors.lightRed,
             width: 2,
           ), // Change color when focused
           borderRadius: BorderRadius.circular(
@@ -33,7 +39,7 @@ class CommonTextFormField extends StatelessWidget {
         ),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.blue,
+            color: AppColors.lightRed,
             width: 2,
           ), // Change color when focused
           borderRadius: BorderRadius.circular(

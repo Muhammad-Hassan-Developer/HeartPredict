@@ -33,7 +33,7 @@ class CommonButton extends StatelessWidget {
         width: screenWidth * buttonWidth, // Dynamic width
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.lightGreen,
+          color: AppColors.lightRed,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade500,

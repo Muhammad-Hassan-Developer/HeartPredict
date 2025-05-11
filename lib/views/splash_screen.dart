@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:heart_prediction/views/prediction_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/welcome_screen.dart';
 class SplashScreen extends StatefulWidget {

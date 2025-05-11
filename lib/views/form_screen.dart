@@ -133,43 +133,46 @@ class _FormScreenState extends State<FormScreen> {
       //   style: TextStyle(fontSize: 25,),
       // ),),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.04),
-          child: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: screenHeight * 0.02),
-                  //Form Submission Container
-                  Container(
-                    height: screenHeight * 0.08,
-                    width: screenWidth * 0.80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.lightGreen,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade500,
-                          blurRadius: 15.0,
-                          spreadRadius: 1.0,
-                        ),
-                      ],
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+               // SizedBox(height: screenHeight * 0.02),
+                //Form Submission Container
+                Container(
+                  height: screenHeight * 0.15,
+                  width: screenWidth * double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(60), // Only bottom-right corner is rounded
                     ),
-                    child: Center(
-                      child: Text(
-                        'Form Submission',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: screenWidth * 0.06,
-                          fontWeight: FontWeight.w800,
-                        ),
+                    color: AppColors.lightRed,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade500,
+                        blurRadius: 15.0,
+                        spreadRadius: 1.0,
+                      ),
+                    ],
+                  ),
+
+                  child: Center(
+                    child: Text(
+                      'Form Submission',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: screenWidth * 0.08,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),
-                  SizedBox(height: screenHeight * 0.02),
-                  //Form
-                  Form(
+                ),
+                SizedBox(height: screenHeight * 0.02),
+                //Form
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Form(
                     key: _formKey,
                     child: Column(
                       children: [
@@ -231,13 +234,14 @@ class _FormScreenState extends State<FormScreen> {
                             Text(
                               'Gender',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 18,color: AppColors.lightRed,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             ...gendersList.map((gender) {
                               return RadioListTile<String>(
-                                title: Text(gender),
+                                activeColor: AppColors.lightRed,
+                                title: Text(gender,style: TextStyle(color: AppColors.lightRed)),
                                 value: gender,
                                 groupValue: selectedGender,
                                 onChanged: (value) {
@@ -257,16 +261,17 @@ class _FormScreenState extends State<FormScreen> {
                         DropdownButtonFormField<String>(
                           decoration: InputDecoration(
                             labelText: "Select Chest Pain",
+                            labelStyle: TextStyle(color: AppColors.lightRed),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
@@ -283,8 +288,9 @@ class _FormScreenState extends State<FormScreen> {
                           items:
                               chestPainMap.keys.map((String chestPainType) {
                                 return DropdownMenuItem<String>(
+
                                   value: chestPainType,
-                                  child: Text(chestPainType),
+                                  child: Text(chestPainType,style: TextStyle(color: AppColors.lightRed),),
                                 );
                               }).toList(),
                           onChanged: (String? newValue) {
@@ -355,12 +361,13 @@ class _FormScreenState extends State<FormScreen> {
                               'Fasting Blood Sugar',
                               style: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.bold,color: AppColors.lightRed
                               ),
                             ),
                             ...fastingSugarList.map((fastingSugar) {
                               return RadioListTile<String>(
-                                title: Text(fastingSugar),
+                                activeColor: AppColors.lightRed,
+                                title: Text(fastingSugar,style: TextStyle(color: AppColors.lightRed)),
                                 value: fastingSugar,
                                 groupValue: selectedFastingSugar,
                                 onChanged: (value) {
@@ -378,16 +385,17 @@ class _FormScreenState extends State<FormScreen> {
                         DropdownButtonFormField<String>(
                           decoration: InputDecoration(
                             labelText: "Select ECG Results",
+                            labelStyle: TextStyle(color: AppColors.lightRed),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
@@ -405,7 +413,7 @@ class _FormScreenState extends State<FormScreen> {
                               ecgResultsMap.keys.map((String ecgResult) {
                                 return DropdownMenuItem<String>(
                                   value: ecgResult,
-                                  child: Text(ecgResult),
+                                  child: Text(ecgResult,style: TextStyle(color: AppColors.lightRed)),
                                 );
                               }).toList(),
                           onChanged: (String? newValue) {
@@ -426,17 +434,18 @@ class _FormScreenState extends State<FormScreen> {
                         //Slope of Peak Exercise
                         DropdownButtonFormField<String>(
                           decoration: InputDecoration(
+                            labelStyle: TextStyle(color: AppColors.lightRed),
                             labelText: "Select Slope of Peak Exercise",
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
@@ -454,7 +463,7 @@ class _FormScreenState extends State<FormScreen> {
                               slopOfPeakExerciseMap.keys.map((String slop) {
                                 return DropdownMenuItem<String>(
                                   value: slop,
-                                  child: Text(slop),
+                                  child: Text(slop,style: TextStyle(color: AppColors.lightRed)),
                                 );
                               }).toList(),
                           onChanged: (String? newValue) {
@@ -477,17 +486,18 @@ class _FormScreenState extends State<FormScreen> {
                         //Major Vessels
                         DropdownButtonFormField<String>(
                           decoration: InputDecoration(
+                            labelStyle: TextStyle(color: AppColors.lightRed),
                             labelText: "Select Major Vessels",
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
@@ -507,7 +517,7 @@ class _FormScreenState extends State<FormScreen> {
                               ) {
                                 return DropdownMenuItem<String>(
                                   value: majorVessels,
-                                  child: Text(majorVessels),
+                                  child: Text(majorVessels,style: TextStyle(color: AppColors.lightRed)),
                                 );
                               }).toList(),
                           onChanged: (String? newValue) {
@@ -530,17 +540,18 @@ class _FormScreenState extends State<FormScreen> {
                         //Thalassemia Type
                         DropdownButtonFormField<String>(
                           decoration: InputDecoration(
+                            labelStyle: TextStyle(color: AppColors.lightRed),
                             labelText: "Select Thalassemia Type",
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: AppColors.lightGreen,
+                                color: AppColors.lightRed,
                                 width: 2,
                               ),
                               borderRadius: BorderRadius.circular(20),
@@ -558,7 +569,7 @@ class _FormScreenState extends State<FormScreen> {
                               thalassemiaTypeMap.keys.map((String thalassemia) {
                                 return DropdownMenuItem<String>(
                                   value: thalassemia,
-                                  child: Text(thalassemia),
+                                  child: Text(thalassemia,style: TextStyle(color: AppColors.lightRed)),
                                 );
                               }).toList(),
                           onChanged: (String? newValue) {
@@ -609,11 +620,13 @@ class _FormScreenState extends State<FormScreen> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
+                                  color: AppColors.lightRed
                               ),
                             ),
                             ...anginaList.map((angina) {
                               return RadioListTile<String>(
-                                title: Text(angina),
+                                activeColor: AppColors.lightRed,
+                                title: Text(angina,style: TextStyle(color: AppColors.lightRed)),
                                 value: angina,
                                 groupValue: selectedAngina,
                                 onChanged: (value) {
@@ -649,12 +662,12 @@ class _FormScreenState extends State<FormScreen> {
                           },
                         ),
 
-                        SizedBox(height: screenHeight * 0.02),
+                        SizedBox(height: screenHeight * 0.03),
                         //Predict Button
                         CommonButton(
                           buttonText: 'Predict',
                           buttonHeight: 0.08,
-                          buttonWidth: 0.80,
+                          buttonWidth: 0.90,
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
                                 // Show loading indicator
@@ -705,8 +718,8 @@ class _FormScreenState extends State<FormScreen> {
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
