@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:heart_prediction/views/patient_view_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
+import 'package:heart_prediction/views/ui_helper/header.dart';
 
 import '../apis/basic/services/firebase_services.dart';
 
@@ -25,93 +26,100 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
   TextEditingController searchController=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Patient Records')),
-      body: Column(
-        children: [
-          // Add optional search bar here later
-          Expanded( // 👈 Moved here
-            child: FutureBuilder(
-              future: patientData,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No data found'));
-                }
+    // Get screen width & height using MediaQuery
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
-                final data = snapshot.data!;
-
-                return ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    final formData = data[index]['formData'];
-                    final prediction = data[index]['predictionResult'];
-
-                    return GestureDetector(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.lightGreen.withOpacity(0.4),
-                              spreadRadius: 2,
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                          border: Border.all(color: Colors.blue.shade100),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(
+          children: [
+            Header(heading: 'Patient Records'),
+            SizedBox(height: screenHeight * 0.05),
+            // Add optional search bar here later
+            Expanded( // 👈 Moved here
+              child: FutureBuilder(
+                future: patientData,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No data found'));
+                  }
+      
+                  final data = snapshot.data!;
+      
+                  return ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      final formData = data[index]['formData'];
+                      final prediction = data[index]['predictionResult'];
+      
+                      return GestureDetector(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color:AppColors.lightRed,width: 3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade500,
+                                blurRadius: 10.0,
+                                spreadRadius: 1.0,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Name: ${formData['Patient Name'] ?? 'Unknown'}',
+                                style: const TextStyle(
+                                  color: AppColors.lightRed,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text('CNIC: ${formData['CNIC']}', style: const TextStyle(color: AppColors.lightRed)),
+                              // Text('Sex: ${formData['Sex']}', style: const TextStyle(color: AppColors.lightGreen)),
+                              // Text(
+                              //   'Prediction: $prediction',
+                              //   style: const TextStyle(color: AppColors.lightGreen, fontWeight: FontWeight.w500),
+                              // ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Name: ${formData['Patient Name'] ?? 'Unknown'}',
-                              style: const TextStyle(
-                                color: AppColors.lightGreen,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Tap Successfully")),
+                          );
+                          log(prediction);
+                          log(formData.toString());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PatientViewScreen(
+      
+                                prediction: prediction,
+                                formData: formData,
                               ),
                             ),
-                            const SizedBox(height: 6),
-                            Text('Age: ${formData['Age']}', style: const TextStyle(color: AppColors.lightGreen)),
-                            Text('Sex: ${formData['Sex']}', style: const TextStyle(color: AppColors.lightGreen)),
-                            Text(
-                              'Prediction: $prediction',
-                              style: const TextStyle(color: AppColors.lightGreen, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Tap Successfully")),
-                        );
-                        log(prediction);
-                        log(formData.toString());
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PatientViewScreen(
-
-                              prediction: prediction,
-                              formData: formData,
-                            ),
-                          ),
-                        );
-                      },
-
-                    );
-                  },
-                );
-              },
+                          );
+                        },
+      
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

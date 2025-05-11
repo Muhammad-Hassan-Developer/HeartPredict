@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:heart_prediction/views/patient_records_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/ui_helper/common_button.dart';
+import 'package:heart_prediction/views/ui_helper/header.dart';
 
 import '../apis/basic/services/firebase_services.dart';
 import 'form_screen.dart';
@@ -25,34 +26,7 @@ class WelcomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Header Container
-                Container(
-                  height: screenHeight * 0.15,
-                  width: screenWidth * double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(60), // Only bottom-right corner is rounded
-                    ),
-                    color: AppColors.lightRed,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade500,
-                        blurRadius: 15.0,
-                        spreadRadius: 1.0,
-                      ),
-                    ],
-                  ),
-
-                  child: Center(
-                    child: Text(
-                      'Heart Disease Prediction',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.08,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                ),
+                Header(heading: 'Heart Disease Prediction'),
                 SizedBox(height: screenHeight * 0.10), // Dynamic spacing
 
                 // Welcome Text

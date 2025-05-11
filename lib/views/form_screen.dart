@@ -6,6 +6,7 @@ import 'package:heart_prediction/views/prediction_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/ui_helper/common_button.dart';
 import 'package:heart_prediction/views/ui_helper/common_textFormField.dart';
+import 'package:heart_prediction/views/ui_helper/header.dart';
 
 import '../apis/basic/services/model_services.dart';
 
@@ -140,34 +141,7 @@ class _FormScreenState extends State<FormScreen> {
               children: [
                // SizedBox(height: screenHeight * 0.02),
                 //Form Submission Container
-                Container(
-                  height: screenHeight * 0.15,
-                  width: screenWidth * double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(60), // Only bottom-right corner is rounded
-                    ),
-                    color: AppColors.lightRed,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade500,
-                        blurRadius: 15.0,
-                        spreadRadius: 1.0,
-                      ),
-                    ],
-                  ),
-
-                  child: Center(
-                    child: Text(
-                      'Form Submission',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: screenWidth * 0.08,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                ),
+                Header(heading: 'Form Submission'),
                 SizedBox(height: screenHeight * 0.02),
                 //Form
                 Padding(

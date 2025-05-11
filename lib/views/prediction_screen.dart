@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:heart_prediction/apis/basic/services/firebase_services.dart';
 import 'package:heart_prediction/views/patient_records_screen.dart';
-import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/ui_helper/common_button.dart';
+import 'package:heart_prediction/views/ui_helper/header.dart';
 
 
 class PredictionScreen extends StatefulWidget {
@@ -27,42 +27,13 @@ class _PredictionScreenState extends State<PredictionScreen> {
   Widget build(BuildContext context) {
     log('Prediction Result: ${widget.predictionResult}');
     // Get screen width & height using MediaQuery
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         body: Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: screenHeight * 0.15,
-                width: screenWidth * double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(60), // Only bottom-right corner is rounded
-                  ),
-                  color: AppColors.lightRed,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade500,
-                      blurRadius: 15.0,
-                      spreadRadius: 1.0,
-                    ),
-                  ],
-                ),
-      
-                child: Center(
-                  child: Text(
-                    'Prediction Result',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: screenWidth * 0.08,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
-              ),
+              Header(heading: 'Prediction Result'),
       
               SizedBox(height: 40),
               // Text(

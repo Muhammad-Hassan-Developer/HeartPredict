@@ -56,9 +56,9 @@ class PatientViewScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("CNIC: ${formData['CNIC'] ?? 'N/A'}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                            Text("Age: ${formData['Age'] ?? 'N/A'}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                            Text("Sex: ${formData['Sex'] ?? 'N/A'}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                            Text("CNIC: ${formData['CNIC'] ?? 'N/A'}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold,color: AppColors.lightRed)),
+                            Text("Age: ${formData['Age'] ?? 'N/A'}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold,color: AppColors.lightRed)),
+                            Text("Sex: ${formData['Sex'] ?? 'N/A'}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold,color: AppColors.lightRed)),
                           ],
                         ),
                       ),
@@ -100,7 +100,7 @@ class PatientViewScreen extends StatelessWidget {
 
                   const Text("Prediction Result", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
-                  Text(prediction.toString()),
+                  Text(prediction.toString(),style: TextStyle(color: AppColors.lightRed),),
                 ],
               ),
 

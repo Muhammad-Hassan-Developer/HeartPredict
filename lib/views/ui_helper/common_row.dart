@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heart_prediction/views/ui_helper/color.dart';
 class CommonRow extends StatelessWidget {
   final String heading;
   final dynamic value;
@@ -9,8 +10,8 @@ class CommonRow extends StatelessWidget {
     return  Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-         Text(heading,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-        Text(value ?? 'N/A',style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+         Text(heading,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,color: AppColors.lightRed)),
+        Text(value ?? 'N/A',style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,color: AppColors.lightRed)),
       ],
     );
   }
