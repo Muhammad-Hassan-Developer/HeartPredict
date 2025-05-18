@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:heart_prediction/views/patient_view_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
+import 'package:heart_prediction/views/ui_helper/dated_time.dart';
 import 'package:heart_prediction/views/ui_helper/header.dart';
 
 import '../apis/basic/services/firebase_services.dart';
@@ -35,7 +36,7 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
         backgroundColor: Colors.white,
         body: Column(
           children: [
-            Header(heading: 'Patient Records'),
+            Header(heading: 'Patient Records', showBackButton: true),
             SizedBox(height: screenHeight * 0.05),
             // Add optional search bar here later
             Expanded( // 👈 Moved here
@@ -48,15 +49,15 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
                   if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(child: Text('No data found'));
                   }
-      
+
                   final data = snapshot.data!;
-      
+
                   return ListView.builder(
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       final formData = data[index]['formData'];
                       final prediction = data[index]['predictionResult'];
-      
+
                       return GestureDetector(
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -86,32 +87,27 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
                               ),
                               const SizedBox(height: 6),
                               Text('CNIC: ${formData['CNIC']}', style: const TextStyle(color: AppColors.lightRed)),
-                              // Text('Sex: ${formData['Sex']}', style: const TextStyle(color: AppColors.lightGreen)),
-                              // Text(
-                              //   'Prediction: $prediction',
-                              //   style: const TextStyle(color: AppColors.lightGreen, fontWeight: FontWeight.w500),
-                              // ),
+                              Text('Date: ${formData['Date']}', style: const TextStyle(color: AppColors.lightRed)),
+                              Text('Time: ${formData['Time']}', style: const TextStyle(color: AppColors.lightRed)),
                             ],
                           ),
                         ),
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("Tap Successfully")),
-                          );
-                          log(prediction);
-                          log(formData.toString());
+                          DatedTime.updateDateTime();
+                          log("Date: ${DatedTime.formattedDate} Time: ${DatedTime.formattedTime}");
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => PatientViewScreen(
-      
+
                                 prediction: prediction,
                                 formData: formData,
                               ),
                             ),
                           );
                         },
-      
+
                       );
                     },
                   );

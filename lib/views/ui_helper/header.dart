@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
-
 import 'color.dart';
+
 class Header extends StatelessWidget {
   final String heading;
-   const Header({super.key,required this.heading});
+  final bool showBackButton; // Optional parameter
+
+  const Header({
+    super.key,
+    required this.heading,
+    this.showBackButton = false, // Defaults to false
+  });
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
       height: screenHeight * 0.15,
-      width: screenWidth * double.infinity,
+      width: screenWidth,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(60), // Only bottom-right corner is rounded
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(60),
         ),
         color: AppColors.lightRed,
         boxShadow: [
@@ -25,18 +32,29 @@ class Header extends StatelessWidget {
           ),
         ],
       ),
-
-      child: Center(
-        child: Text(
-          heading,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: screenWidth * 0.08,
-            fontWeight: FontWeight.w800,
+      child: Stack(
+        children: [
+          Center(
+            child: Text(
+              heading,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: screenWidth * 0.08,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ),
-        ),
+          if (showBackButton)
+            Positioned(
+              left: screenWidth * 0.001,
+              top: screenHeight * 0.05,
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white,size: 30,),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ),
+        ],
       ),
     );
   }
 }
-

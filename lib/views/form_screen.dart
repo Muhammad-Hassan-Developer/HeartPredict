@@ -6,7 +6,9 @@ import 'package:heart_prediction/views/prediction_screen.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/ui_helper/common_button.dart';
 import 'package:heart_prediction/views/ui_helper/common_textFormField.dart';
+import 'package:heart_prediction/views/ui_helper/dated_time.dart';
 import 'package:heart_prediction/views/ui_helper/header.dart';
+
 
 import '../apis/basic/services/model_services.dart';
 
@@ -123,6 +125,8 @@ class _FormScreenState extends State<FormScreen> {
     'Reversible defect': 3,
   };
 
+
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -141,7 +145,7 @@ class _FormScreenState extends State<FormScreen> {
               children: [
                // SizedBox(height: screenHeight * 0.02),
                 //Form Submission Container
-                Header(heading: 'Form Submission'),
+                Header(heading: 'Form Submission', showBackButton: true),
                 SizedBox(height: screenHeight * 0.02),
                 //Form
                 Padding(
@@ -650,7 +654,10 @@ class _FormScreenState extends State<FormScreen> {
                                   barrierDismissible: false,
                                   builder: (_) => Center(child: CircularProgressIndicator()),
                                 );
+                                DatedTime.updateDateTime();
                                 final Map<String, dynamic> formData = {
+                                  "Date":DatedTime.formattedDate,
+                                  "Time":DatedTime.formattedTime,
                                   "Patient Name": patientName.text ,
                                   "CNIC": patientCard.text ,
                                   "Age": patientAge.text ,

@@ -33,7 +33,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Header(heading: 'Prediction Result'),
+              Header(heading: 'Prediction Result', showBackButton: true),
       
               SizedBox(height: 40),
               // Text(
