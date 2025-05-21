@@ -4,13 +4,15 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# 🚀 Proud to share my first Flutter app – Heart Disease Prediction!
+I’ve developed a Heart Disease Prediction App using Flutter, following a clean and scalable MVVM architecture and integrating Firebase Realtime Database for cloud storage.
+🔍 Users can input their medical data to get an AI-based prediction on the likelihood of heart disease.
+ ✅ The prediction is powered by a pretrained Machine Learning model that I hosted using a Flask API on Heroku — enabling real-time communication between the app and the model backend.
+# 🧠 Key Highlights:
+Flutter app with decent UI and MVVM pattern
+Firebase integration for secure and real-time data storage
+Flask API hosted on Heroku for ML model inference
+Real-world health prediction with personalized results
+# This project has been a big learning milestone — and I’m just getting started. 🚀
+ Would love your thoughts and feedback!
+hashtag#Flutter hashtag#MVVM hashtag#Firebase hashtag#MachineLearning hashtag#HeartDiseasePrediction hashtag#Heroku hashtag#FlaskAPI hashtag#MobileAppDevelopment hashtag#AIinHealthcare hashtag#FirstApp hashtag#OpenSource hashtag#GitHub hashtag#HealthTech
