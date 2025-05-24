@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:heart_prediction/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:heart_prediction/views/ui_helper/heart_loader.dart';
+
 import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,21 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
      debugShowCheckedModeBanner: false,
       home: SplashScreen(),
+    );
+  }
+}
+class HeartbeatAnimationScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Heartbeat Animation'),
+        backgroundColor: Colors.redAccent,
+      ),
+      body: Center(
+        child: heartBeatLoader()
+      ),
     );
   }
 }
