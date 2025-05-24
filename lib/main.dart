@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       //color: Colors.white,
       title: 'Flutter Demo',
      debugShowCheckedModeBanner: false,
-      home: StaticHeartRateChart(),
+      home: SplashScreen(),
     );
   }
 }
