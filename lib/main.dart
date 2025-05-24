@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heart_prediction/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:heart_prediction/views/ui_helper/heart_loader.dart';
+import 'package:heart_prediction/views/view_components/heart_rate_tester.dart';
 
 import 'firebase_options.dart';
 void main() async {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       //color: Colors.white,
       title: 'Flutter Demo',
      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: StaticHeartRateChart(),
     );
   }
 }
