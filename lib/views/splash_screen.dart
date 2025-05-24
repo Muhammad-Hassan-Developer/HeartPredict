@@ -30,6 +30,7 @@ void initState() {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SizedBox(
         height: height,
         width: width,

@@ -17,6 +17,7 @@ class PatientViewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Column(
           children: [
             Header(heading: 'Patient Detail', showBackButton: true),

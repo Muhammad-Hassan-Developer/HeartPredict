@@ -8,6 +8,7 @@ import 'package:heart_prediction/views/ui_helper/common_button.dart';
 import 'package:heart_prediction/views/ui_helper/common_textFormField.dart';
 import 'package:heart_prediction/views/ui_helper/dated_time.dart';
 import 'package:heart_prediction/views/ui_helper/header.dart';
+import 'package:heart_prediction/views/ui_helper/heart_loader_screen.dart';
 
 
 import '../apis/basic/services/model_services.dart';
@@ -132,6 +133,7 @@ class _FormScreenState extends State<FormScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Colors.white,
       // appBar: AppBar(
       //   title: Text(
       //   'Form Submission',
@@ -652,7 +654,7 @@ class _FormScreenState extends State<FormScreen> {
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,
-                                  builder: (_) => Center(child: CircularProgressIndicator()),
+                                  builder: (_) => HeartLoaderScreen(),
                                 );
                                 DatedTime.updateDateTime();
                                 final Map<String, dynamic> formData = {

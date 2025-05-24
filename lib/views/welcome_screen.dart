@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:heart_prediction/views/patient_records_screen.dart';
+import 'package:heart_prediction/views/ui_helper/color.dart';
 
 import 'package:heart_prediction/views/ui_helper/common_button.dart';
 import 'package:heart_prediction/views/ui_helper/header.dart';
 import 'package:heart_prediction/views/ui_helper/heart_loader.dart';
+import 'package:heart_prediction/views/ui_helper/heart_loader_screen.dart';
 
 import '../apis/basic/services/firebase_services.dart';
 import 'form_screen.dart';
@@ -20,6 +22,7 @@ class WelcomeScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView( //  Prevent overflow
           child: Center(
@@ -69,12 +72,10 @@ class WelcomeScreen extends StatelessWidget {
                           imageHeight: 0.07,
                           imageWidth: 0.15,
                             onTap: () async {
-                              log('tapped');
-
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
-                                builder: (_) =>  Center(child: heartBeatLoader()),
+                                builder: (_) =>  HeartLoaderScreen(),
                               );
 
                               try {

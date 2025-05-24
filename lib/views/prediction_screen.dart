@@ -29,6 +29,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     // Get screen width & height using MediaQuery
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

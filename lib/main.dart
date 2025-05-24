@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //color: Colors.white,
       title: 'Flutter Demo',
      debugShowCheckedModeBanner: false,
       home: SplashScreen(),
@@ -28,7 +29,7 @@ class HeartbeatAnimationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue,
       appBar: AppBar(
         title: Text('Heartbeat Animation'),
         backgroundColor: Colors.redAccent,
