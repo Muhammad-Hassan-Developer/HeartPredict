@@ -37,7 +37,7 @@ void initState() {
         child: Stack(
           children: [
             Positioned(
-              left: width * 0.1,
+              left: width * 0.02,
               top: height * 0.60,
               child: Text(
                 'Heart Disease Prediction',

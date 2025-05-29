@@ -29,6 +29,7 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Scaffold(
@@ -58,119 +59,120 @@ class _PatientRecordsScreenState extends State<PatientRecordsScreen> {
                   }
 
                   final data = snapshot.data!;
-                  if (searchController.text.isEmpty) {
-                    return ListView.builder(
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        final formData = data[index]['formData'];
-                        final prediction = data[index]['predictionResult'];
+                  final searchText = searchController.text.trim();
 
-                        return GestureDetector(
-                          onTap: () {
-                            DatedTime.updateDateTime();
-                            log("Date: ${DatedTime.formattedDate} Time: ${DatedTime.formattedTime}");
+                  // Filtered list based on CNIC match
+                  final filteredData =
+                      searchText.isEmpty
+                          ? data
+                          : data.where((record) {
+                            final formData = record['formData'] ?? {};
+                            final cnic = formData['CNIC']?.toString() ?? '';
+                            return cnic.contains(searchText);
+                          }).toList();
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PatientViewScreen(
-                                  prediction: prediction,
-                                  formData: formData,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.lightRed, width: 3),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade500,
-                                  blurRadius: 10.0,
-                                  spreadRadius: 1.0,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Name: ${formData['Patient Name'] ?? 'Unknown'}',
-                                  style: const TextStyle(
-                                    color: AppColors.lightRed,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 6),
-                                Text('CNIC: ${formData['CNIC']}', style: const TextStyle(color: AppColors.lightRed)),
-                                Text('Date: ${formData['Date']}', style: const TextStyle(color: AppColors.lightRed)),
-                                Text('Time: ${formData['Time']}', style: const TextStyle(color: AppColors.lightRed)),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
+                  if (filteredData.isEmpty) {
+                    return const Center(child: Text('No matching CNIC found'));
                   }
 
                   return ListView.builder(
-                    itemCount: data.length,
+                    itemCount: filteredData.length,
                     itemBuilder: (context, index) {
-                      final formData = data[index]['formData'];
-                      final prediction = data[index]['predictionResult'];
+                      final formData = filteredData[index]['formData'];
+                      final prediction =
+                          filteredData[index]['predictionResult'];
 
                       return GestureDetector(
                         onTap: () {
                           DatedTime.updateDateTime();
-                          log("Date: ${DatedTime.formattedDate} Time: ${DatedTime.formattedTime}");
+                          log(
+                            "Date: ${DatedTime.formattedDate} Time: ${DatedTime.formattedTime}",
+                          );
 
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PatientViewScreen(
-                                prediction: prediction,
-                                formData: formData,
-                              ),
+                              builder:
+                                  (context) => PatientViewScreen(
+                                    prediction: prediction,
+                                    formData: formData,
+                                  ),
                             ),
                           );
                         },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.lightRed, width: 3),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.shade500,
-                                blurRadius: 10.0,
-                                spreadRadius: 1.0,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 16,
                               ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Name: ${formData['Patient Name'] ?? 'Unknown'}',
-                                style: const TextStyle(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
                                   color: AppColors.lightRed,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                                  width: 3,
                                 ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade500,
+                                    blurRadius: 10.0,
+                                    spreadRadius: 1.0,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 6),
-                              Text('CNIC: ${formData['CNIC']}', style: const TextStyle(color: AppColors.lightRed)),
-                              Text('Date: ${formData['Date']}', style: const TextStyle(color: AppColors.lightRed)),
-                              Text('Time: ${formData['Time']}', style: const TextStyle(color: AppColors.lightRed)),
-                            ],
-                          ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Name: ${formData['Patient Name'] ?? 'Unknown'}',
+                                    style: const TextStyle(
+                                      color: AppColors.lightRed,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    'CNIC: ${formData['CNIC']}',
+                                    style: const TextStyle(
+                                      color: AppColors.lightRed,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Date: ${formData['Date']}',
+                                    style: const TextStyle(
+                                      color: AppColors.lightRed,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Time: ${formData['Time']}',
+                                    style: const TextStyle(
+                                      color: AppColors.lightRed,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              top: screenHeight * .06,
+                              left: screenWidth * .70,
+                              child: GestureDetector(
+                                child: Icon(
+                                  Icons.delete_rounded,
+                                  size: 40,
+                                  color: AppColors.lightRed,
+                                ),
+                                onTap: (){
+                                  log('del');
+
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
