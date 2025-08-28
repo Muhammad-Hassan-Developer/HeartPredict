@@ -1,45 +1,116 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
+# --------------------------------------
+# Flutter & Dart
+# --------------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
 
-# IntelliJ related
+# --------------------------------------
+# Android
+# --------------------------------------
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/.gradle/
+/android/local.properties
+/android/app/*.keystore
+/android/app/*.jks
+/android/key.properties
+/android/captures/
+
+# --------------------------------------
+# iOS
+# --------------------------------------
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/ServiceDefinitions.json
+ios/Runner/GeneratedPluginRegistrant.*
+
+# --------------------------------------
+# VS Code
+# --------------------------------------
+.vscode/
+.history/
+
+# --------------------------------------
+# Android Studio / IntelliJ
+# --------------------------------------
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# --------------------------------------
+# Logs & Miscellaneous
+# --------------------------------------
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.orig
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.svn/
+.swiftpm/
+migrate_working_dir/
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
+# --------------------------------------
+# Python / Machine Learning Files
+# --------------------------------------
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.ipynb_checkpoints
+*.pkl
+*.h5
+*.hdf5
+*.ckpt
+*.pt
+*.pth
+*.joblib
+*.dill
+*.track.dill
+*.cache
+*.npz
+*.npy
 
-# Symbolication related
+# --------------------------------------
+# Symbolication & Obfuscation
+# --------------------------------------
 app.*.symbols
-
-# Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# --------------------------------------
+# Generated Assets (Keep custom assets)
+# --------------------------------------
+*.jar
+*.apk
+*.ap_
+*.aar
+*.dex
+*.class
+
+# --------------------------------------
+# Others
+# --------------------------------------
+*.keystore
+*.jks
+*.env
+.env*
+firebase_app_id_file.json
+google-services.json
+GoogleService-Info.plist
