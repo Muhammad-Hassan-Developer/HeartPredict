@@ -212,6 +212,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///C:/Users/hassa/AppData/Local/Pub/Cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///C:/Users/hassa/AppData/Local/Pub/Cache/hosted/pub.dev/path-1.9.1",
       "packageUri": "lib/",
@@ -270,6 +276,12 @@
       "rootUri": "file:///C:/Users/hassa/AppData/Local/Pub/Cache/hosted/pub.dev/posix-6.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///C:/Users/hassa/AppData/Local/Pub/Cache/hosted/pub.dev/provider-6.1.5+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "sky_engine",
@@ -350,7 +362,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-05-24T15:18:20.931705Z",
+  "generated": "2025-08-28T13:19:40.537217Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///C:/Users/hassa/Downloads/flutter_windows_3.24.1-stable/flutter",

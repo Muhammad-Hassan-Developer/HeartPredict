@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:heart_prediction/view_model/splash_screen_view_model.dart';
 import 'package:heart_prediction/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:heart_prediction/views/ui_helper/heart_loader.dart';
-import 'package:heart_prediction/views/view_components/heart_rate_tester.dart';
+import 'package:provider/provider.dart';
 
-import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -18,11 +19,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //color: Colors.white,
-      title: 'Flutter Demo',
-     debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SplashViewModel()),
+      ],
+      child: MaterialApp(
+        //color: Colors.white,
+        title: 'Flutter Demo',
+       debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      ),
     );
   }
 }

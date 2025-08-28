@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/ui_helper/heart_loader.dart';
 import 'package:heart_prediction/views/welcome_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../view_model/splash_screen_view_model.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -15,15 +18,13 @@ class _SplashScreenState extends State<SplashScreen> {
 @override
 void initState() {
   super.initState();
-  Future.delayed(Duration(seconds: 10), () {
-    if (mounted) { // ✅ Check to avoid navigation if widget is disposed
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => WelcomeScreen()),
-      );
-    }
+
+  /// Start splash timer via ViewModel
+  Future.microtask(() {
+    context.read<SplashViewModel>().startSplash(context);
   });
 }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
