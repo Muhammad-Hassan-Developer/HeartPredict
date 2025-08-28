@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:heart_prediction/views/ui_helper/color.dart';
 import 'package:heart_prediction/views/ui_helper/heart_loader.dart';
-import 'package:heart_prediction/views/welcome_screen.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import '../view_model/splash_screen_view_model.dart';
